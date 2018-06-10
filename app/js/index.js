@@ -1,7 +1,7 @@
 'use strict';
 
 const electron = require('electron');
-const {ipcMain, ipcRenderer, app, Menu, Tray} = electron;
+const {ipcMain, ipcRenderer, app, Menu, Tray, nativeImage} = electron;
 const path = require('path');
 
 var soundButtons = document.querySelectorAll('.button-sound');
@@ -40,15 +40,22 @@ settingsEl.addEventListener('click', function () {
 
 ///
 
-var trayIcon = null;
+let trayIcon = null;
+let iconPath = '';
 
 // app.on('ready', () => {
+
 	if (process.platform === 'darwin') {
-		trayIcon = new Tray(path.join(__dirname, 'img/tray-iconTemplate.png'));
+		iconPath = path.join(__dirname, 'img/tray-iconTemplate.png');
 	}
 	else {
-	    trayIcon = new Tray(path.join(__dirname, 'img/tray-icon-alt.png'));
+			iconPath = path.join(__dirname, 'img/tray-iconTemplate.png');
 	}
+
+	// let nimage = nativeImage.createFromPath(iconPath);
+	trayIcon = new Tray(iconPath);
+
+	alert(iconPath)
 
 	let trayMenuTemplate = [
 	    {
@@ -69,6 +76,6 @@ var trayIcon = null;
 	    }
 	];
 	let trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
-	trayIcon.setToolTip('This is my application.')
+	trayIcon.setToolTip('Sound Machine')
 	trayIcon.setContextMenu(trayMenu);
 // });
